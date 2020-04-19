@@ -9,6 +9,7 @@ require 'StateMachine'
 require 'states/BaseState'
 require 'states/PlayState'
 require 'states/ScoreState'
+require 'states/CountdownState'
 require 'states/TitleScreenState'
 
 WWIDTH = 1280
@@ -41,6 +42,13 @@ function love.load()
     hugeFont = love.graphics.newFont('fonts/flappy.ttf', 56)
     love.graphics.setFont(flappyFont)
 
+    sounds = {
+        ['jump'] = love.audio.newSource('sfx/jump.wav', 'static'),
+        ['explosion'] = love.audio.newSource('sfx/explosion.wav', 'static'),
+        ['death'] = love.audio.newSource('sfx/death.wav', 'static'),
+        ['score'] = love.audio.newSource('sfx/score.wav', 'static'),
+    }
+
     push:setupScreen(VWIDTH,  VHEIGHT, WWIDTH, WHEIGHT, {
         vsync = true,
         fullscreen = false,
@@ -49,6 +57,7 @@ function love.load()
 
     gStateMachine = StateMachine {
         ['title'] = function() return TitleScreenState() end,
+        ['countdown'] = function() return CountdownState() end,
         ['play'] = function() return PlayState() end,
         ['score'] = function() return ScoreState() end,
     }
