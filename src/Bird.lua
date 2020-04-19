@@ -26,12 +26,14 @@ function Bird:update(dt)
     self.dy = self.dy + GRAVITY * dt
 
     if love.keyboard.wasPressed('space') then
+        count = count + 1
         self.dy = -1
     end
 
     self.y = self.y + self.dy
 end
-
+count = 0
 function Bird:render()
+    love.graphics.printf(count, 0, 64, VWIDTH, 'center')
     love.graphics.draw(self.image, self.x, self.y)
 end
