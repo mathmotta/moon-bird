@@ -23,12 +23,12 @@ local GROUND_SCROLL_SPEED = 60
 local BG_LOOPING_POINT = 415
 
 local bird = Bird()
-
 local pipePairs = {}
 
 local spawnTimer = 0
-
 local lastY = -PIPE_HEIGHT + math.random(80)+20
+
+local scrolling = true
 
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
@@ -44,6 +44,10 @@ function love.load()
 end
 
 function love.update(dt)
+    if not scrolling then 
+        return
+    end
+
     bgScroll = (bgScroll + BG_SCROLL_SPEED * dt) % BG_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VWIDTH
 
@@ -63,6 +67,16 @@ function love.update(dt)
 
     for k, pair in pairs(pipePairs) do
         pair:update(dt)
+
+        for l, pipe in pairs(pair.pipes) do
+            if bird:collides(pipe) then
+                scrolling = false
+            end
+        end
+
+        if pair.x < -PIPE_WIDTH then
+
+        end
     end
 
     for k, pair in pairs(pipePairs) do
