@@ -4,12 +4,14 @@ Class = require 'class'
 require 'Bird'
 require 'Pipe'
 require 'PipePair'
+require 'Badge'
 
 require 'StateMachine'
 require 'states/BaseState'
 require 'states/PlayState'
 require 'states/ScoreState'
 require 'states/CountdownState'
+require 'states/PauseState'
 require 'states/TitleScreenState'
 
 WWIDTH = 1280
@@ -44,6 +46,7 @@ function love.load()
 
     sounds = {
         ['jump'] = love.audio.newSource('sfx/jump.wav', 'static'),
+        ['badge'] = love.audio.newSource('sfx/badge.wav', 'static'),
         ['explosion'] = love.audio.newSource('sfx/explosion.wav', 'static'),
         ['death'] = love.audio.newSource('sfx/death.wav', 'static'),
         ['score'] = love.audio.newSource('sfx/score.wav', 'static'),
@@ -57,6 +60,7 @@ function love.load()
 
     gStateMachine = StateMachine {
         ['title'] = function() return TitleScreenState() end,
+        ['pause'] = function() return PauseState() end,
         ['countdown'] = function() return CountdownState() end,
         ['play'] = function() return PlayState() end,
         ['score'] = function() return ScoreState() end,
@@ -67,9 +71,24 @@ function love.load()
 end
 
 function love.update(dt)
-    -- if not scrolling then 
-    --     return
-    -- end
+    if love.keyboard.wasPressed('p') then
+        if scrolling then
+            scrolling = false
+            gStateMachine:change('pause')
+        end
+    end
+
+    if love.keyboard.wasPressed('s') then
+        if not scrolling then
+            scrolling = true
+            gStateMachine:change('play')
+        end
+    end
+
+    if not scrolling then 
+        gStateMachine:update(dt)
+        return
+    end
 
     bgScroll = (bgScroll + BG_SCROLL_SPEED * dt) % BG_LOOPING_POINT
     groundScroll = (groundScroll + GROUND_SCROLL_SPEED * dt) % VWIDTH

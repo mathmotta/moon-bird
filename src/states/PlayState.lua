@@ -15,6 +15,7 @@ local INTERVAL = 0.1
 function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
+    self.badges = {}
     self.timer = 0
 
     self.score = 0
@@ -42,6 +43,17 @@ function PlayState:update(dt)
             if pair.x + PIPE_WIDTH < self.bird.x then
                 self.score = self.score +1
                 pair.scored = true
+
+                if self.score == 4 then
+                    table.insert(self.badges, Badge('bronze'))
+                    sounds['badge']:play()
+                elseif self.score == 9 then
+                    table.insert(self.badges, Badge('silver'))
+                    sounds['badge']:play()
+                elseif self.score == 16 then
+                    table.insert(self.badges, Badge('gold'))
+                    sounds['badge']:play()
+                end
                 sounds['score']:play()
             end
         end 
@@ -81,6 +93,9 @@ end
 function PlayState:render()
     for k, pair in pairs(self.pipePairs) do
         pair:render()
+    end
+    for b, badge in pairs(self.badges) do
+        badge:render()
     end
 
     love.graphics.setFont(flappyFont)

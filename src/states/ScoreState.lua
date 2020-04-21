@@ -1,7 +1,6 @@
 
 ScoreState = Class{__includes = BaseState}
 
-
 function ScoreState:enter(params)
     self.score = params.score
 end
