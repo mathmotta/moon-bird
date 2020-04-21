@@ -8,6 +8,9 @@ PIPE_HEIGHT = 288
 BIRD_WIDTH = 38
 BIRD_HEIGHT = 24
 
+local MIN_INTERVAL = 2
+local MAX_INTERVAL = 4
+local INTERVAL = 0.1
 
 function PlayState:init()
     self.bird = Bird()
@@ -22,7 +25,7 @@ end
 function PlayState:update(dt)
     self.timer = self.timer + dt
 
-    if self.timer > 2 then
+    if self.timer > INTERVAL then
         local y = math.max(-PIPE_HEIGHT + 10, 
             math.min(self.lastY + math.random(-20, 20), VHEIGHT - 90 - PIPE_HEIGHT))
         self.lastY = y
@@ -30,6 +33,7 @@ function PlayState:update(dt)
         table.insert(self.pipePairs, PipePair(y))
 
         self.timer = 0
+        INTERVAL = math.random(MIN_INTERVAL,MAX_INTERVAL)
     end
 
     for k, pair in pairs(self.pipePairs) do
