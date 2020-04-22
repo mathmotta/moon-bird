@@ -34,6 +34,8 @@ local GROUND_LOOPING_POINT = 514
 
 local scrolling = true
 
+local playState = PlayState()
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
     love.window.setTitle('Moon Bird')
@@ -62,7 +64,7 @@ function love.load()
         ['title'] = function() return TitleScreenState() end,
         ['pause'] = function() return PauseState() end,
         ['countdown'] = function() return CountdownState() end,
-        ['play'] = function() return PlayState() end,
+        ['play'] = function() return playState end,
         ['score'] = function() return ScoreState() end,
     }
     gStateMachine:change('title')

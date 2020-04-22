@@ -14,7 +14,10 @@ function CountdownState:update(dt)
         self.count = self.count -1 
 
         if self.count == 0 then 
-            gStateMachine:change('play')
+            -- gStateMachine:change('play')
+            gStateMachine:change('play', {
+                reset = true
+            })
         end
     end
 end

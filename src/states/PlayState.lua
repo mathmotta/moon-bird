@@ -12,6 +12,20 @@ local MIN_INTERVAL = 2
 local MAX_INTERVAL = 4
 local INTERVAL = 0.1
 
+function PlayState:enter(reset)
+    if reset then
+        self.bird = Bird()
+        self.pipePairs = {}
+        self.badges = {}
+        self.timer = 0
+    
+        self.score = 0
+    
+        self.lastY = -PIPE_HEIGHT + math.random(80) + 20
+        hasInit = true 
+    end
+end
+
 function PlayState:init()
     self.bird = Bird()
     self.pipePairs = {}
@@ -21,6 +35,7 @@ function PlayState:init()
     self.score = 0
 
     self.lastY = -PIPE_HEIGHT + math.random(80) + 20
+    hasInit = true
 end
 
 function PlayState:update(dt)
